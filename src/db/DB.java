@@ -18,6 +18,7 @@ public class DB {
 	
 	//ESTE MÉTODO CARREGA AS PROPRIEDADES DEFINIDAS EM DB.PROPERTIES, DO BANCO DE DADOS
 	private static Properties loadProperties() {
+		
 		try( FileInputStream fs = new FileInputStream("db.properties") ){
 			Properties props = new Properties();
 			props.load(fs);
@@ -31,6 +32,7 @@ public class DB {
 	
 	//FAZ A CONEXÃO COM O BANCO DE DADOS POR MEIO DA INSTANCIAÇÃO DE UM TIPO Connection
 	public static Connection getConnection() {
+		
 		if (conn == null) {
 			try {
 				Properties props = loadProperties();
