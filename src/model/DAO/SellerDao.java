@@ -1,6 +1,8 @@
 package model.DAO;
 
 import java.util.List;
+
+import model.entiteis.Department;
 import model.entiteis.Seller;
 
 public interface SellerDao {
@@ -13,4 +15,6 @@ void insert(Seller obj);
 	Seller findById(Integer id);
 	
 	List<Seller> findAll();
+	
+	List<Seller> findByDepartment(Department department);
 }
