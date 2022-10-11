@@ -23,6 +23,27 @@ public class Program2 {
 		for (Department obj : list) {
 			System.out.println(obj);
 		}
+		
+		/*System.out.println("=== TEST 3: Department insert ===");
+		Department dep1 = new Department(12, "Food");
+		departmentDao.insert(dep1);
+		System.out.println("Inserted :" + dep1);*/
+		
+		System.out.println("=== TEST 4: Department update ===");
+		Department dep2 = new Department(13, "Food");
+		dep2.setName("Games");
+		departmentDao.update(dep2);
+		dep2.setName("Sports");
+		departmentDao.update(dep2);
+		
+		
+		System.out.println("=== TEST 5: Department delete ===");
+		departmentDao.deleteById(5);
+		departmentDao.deleteById(6);
+		departmentDao.deleteById(7);
+		departmentDao.deleteById(8);
+		departmentDao.deleteById(9);
+		departmentDao.deleteById(10);
 	}
 
 }

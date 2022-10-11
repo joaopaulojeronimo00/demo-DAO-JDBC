@@ -54,7 +54,8 @@ public class SellerDaoJDBC implements SellerDao{
 				throw new DbException("No rows affected. Error!");
 			}
 					
-		}catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			throw new DbException(e.getMessage());
 		}finally {
 			DB.closeStatement(st);			

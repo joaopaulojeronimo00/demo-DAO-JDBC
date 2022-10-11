@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 import db.DB;
 import db.DbException;
+import db.DbIntegrityException;
 import model.DAO.DepartmentDAO;
 import model.entiteis.Department;
 
@@ -21,21 +23,80 @@ public class DepartmentDaoJDBC implements DepartmentDAO {
 	public DepartmentDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
+	
 	@Override
 	public void insert(Department obj) {
+		PreparedStatement st = null;
 		
+		try {
+			st = conn.prepareStatement(
+					"INSERT INTO department "
+					+ "(Id, Name) "
+					+ "VALUES (?, ?) ", Statement.RETURN_GENERATED_KEYS);
+			
+			st.setInt(1, obj.getId());
+			st.setString(2, obj.getName());
+			
+			int rowsAffected = st.executeUpdate();
+			
+			if (rowsAffected > 0) {
+				ResultSet rs = st.getGeneratedKeys();
+				if(rs.next()) {
+					int id = rs.getInt(1);
+					obj.setId(id);
+				}
+				DB.closeResultSet(rs);
+			}
+			else {
+				throw new DbException("No rows affected. Error!");
+			}
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}finally {
+			DB.closeStatement(st);			
+		}
 	}
 
 	@Override
 	public void update(Department obj) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"UPDATe department "
+					+ "SET Name = ? "
+					+ "WHERE Id  = ? ");
+			
+			st.setString(1, obj.getName());
+			st.setInt(2, obj.getId());
+			
+			st.executeUpdate();					
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
 		
+		try {
+			st = conn.prepareStatement("DELETE FROM department WHERE Id = ?");
+			
+			st.setInt(1, id);
+			st.executeUpdate();
+		}
+		catch(SQLException e) {
+			throw new DbIntegrityException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 	}
 
 	@Override
